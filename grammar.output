@@ -1,0 +1,1778 @@
+Terminals unused in grammar
+
+   FLOAT
+   T_DEFINE
+   T_INCLUDE
+   T_LIBRARY
+   T_PLUS
+   T_MINUS
+   T_MULTIPLY
+   T_DIVIDE
+   T_NEWLINE
+   T_QUIT
+   T_PRIMITIVO
+   T_CONST
+   T_RETURN
+   T_LEFT_POINTER
+   T_RIGHT_POINTER
+   T_OP_SUM
+   T_OP_SUB
+   T_OP_MUL
+   T_OP_DIV
+   T_EMPTY
+   T_TAB
+   T_CARRIER
+   T_UNKNOWN
+
+
+State 109 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: start_ $end
+
+    1 $@1: %empty
+
+    2 start_: $@1 statement_set marker
+
+    3 statement_set: statement
+    4              | statement marker statement_set
+
+    5 statement: logico_if
+    6          | when
+    7          | declaracao T_SEPARATOR
+    8          | declaracao_funcao
+    9          | comentario
+   10          | chamada_funcao
+   11          | incremento T_SEPARATOR
+   12          | loop_while
+   13          | loop_for
+   14          | loop_do
+   15          | print T_SEPARATOR
+   16          | assign T_SEPARATOR
+
+   17 marker: %empty
+
+   18 goto: %empty
+
+   19 print: T_PRINT T_LEFT_PARENTHESES expression T_RIGHT_PARENTHESES
+
+   20 $@2: %empty
+
+   21 function_block: T_LEFT_BLOCK $@2 marker statement_set goto T_RIGHT_BLOCK
+   22               | marker statement goto
+
+   23 declaracao_funcao: primitive_type funcao_scope T_LEFT_PARENTHESES funcao_args T_RIGHT_PARENTHESES function_block
+
+   24 funcao_scope: T_RESERVED
+   25             | T_ID
+
+   26 funcao_args: declaracao T_EXPR_SEPARATOR funcao_args
+   27            | declaracao
+
+   28 chamada_funcao: funcao_scope T_LEFT_PARENTHESES funcao_args T_RIGHT_PARENTHESES T_SEPARATOR
+
+   29 $@3: %empty
+
+   30 $@4: %empty
+
+   31 when: $@3 T_SWITCH T_LEFT_PARENTHESES expression $@4 T_RIGHT_PARENTHESES T_LEFT_BLOCK switch_statement_set T_RIGHT_BLOCK
+
+   32 switch_statement_set: switch_statement
+   33                     | switch_statement marker switch_statement_set
+
+   34 $@5: %empty
+
+   35 switch_statement_set: T_CONT_CONDICIONAL $@5 T_ARROW_RIGHT function_block
+
+   36 $@6: %empty
+
+   37 $@7: %empty
+
+   38 $@8: %empty
+
+   39 switch_statement: $@6 expression $@7 marker T_ARROW_RIGHT $@8 function_block
+
+   40 loop_while: T_WHILE marker T_LEFT_PARENTHESES b_expression T_RIGHT_PARENTHESES function_block
+
+   41 primitive_type: T_INT
+   42               | T_BOOL
+
+   43 loop_for: T_FOR T_LEFT_PARENTHESES loop_for_cond T_RIGHT_PARENTHESES function_block
+
+   44 loop_for_cond: loop_for_dec T_SEPARATOR marker b_expression T_SEPARATOR marker loop_for_inc goto
+
+   45 loop_for_dec: declaracao
+   46             | assign
+   47             | %empty
+
+   48 loop_for_inc: incremento
+   49             | assign
+   50             | %empty
+
+   51 $@9: %empty
+
+   52 loop_do: T_DO function_block $@9 T_WHILE T_LEFT_PARENTHESES marker b_expression T_RIGHT_PARENTHESES T_SEPARATOR
+
+   53 b_expression: BOOL
+   54             | b_expression T_BOOL_OP marker b_expression
+   55             | expression T_LOGIC_OPERATOR expression
+
+   56 logico_if: T_CONDICIONAL T_LEFT_PARENTHESES b_expression T_RIGHT_PARENTHESES function_block if_else
+
+   57 if_else: T_CONT_CONDICIONAL function_block
+   58        | %empty
+
+   59 assign: T_ID T_ASSIGN expression
+
+   60 declaracao: primitive_type T_ID T_ASSIGN expression
+   61           | primitive_type T_ID
+
+   62 incremento: T_ID T_INCREMENT
+   63           | T_ID T_SELF_ASSIGN expression
+
+   64 comentario: T_SLC
+   65           | T_MLC_START comm_ml T_MLC_END
+
+   66 comm_ml: T_COMMENT_C comm_ml
+   67        | %empty
+
+   68 expression: INT
+   69           | T_STRING
+   70           | BOOL
+   71           | T_ID
+   72           | expression T_ARITH_OP expression
+   73           | T_LEFT expression T_RIGHT
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+INT (258) 68
+FLOAT (259)
+BOOL (260) 53 70
+T_ARITH_OP (261) 72
+T_BOOL_OP (262) 54
+T_LOGIC_OPERATOR (263) 55
+T_ID (264) 25 59 60 61 62 63 71
+T_STRING (265) 69
+T_INCREMENT (266) 62
+T_SELF_ASSIGN (267) 63
+T_INT (268) 41
+T_BOOL (269) 42
+T_DEFINE (270)
+T_INCLUDE (271)
+T_LIBRARY (272)
+T_PLUS (273)
+T_MINUS (274)
+T_MULTIPLY (275)
+T_DIVIDE (276)
+T_LEFT (277) 73
+T_RIGHT (278) 73
+T_NEWLINE (279)
+T_QUIT (280)
+T_PRIMITIVO (281)
+T_RESERVED (282) 24
+T_CONST (283)
+T_SEPARATOR (284) 7 11 15 16 28 44 52
+T_EXPR_SEPARATOR (285) 26
+T_LEFT_BLOCK (286) 21 31
+T_RIGHT_BLOCK (287) 21 31
+T_LEFT_PARENTHESES (288) 19 23 28 31 40 43 52 56
+T_RIGHT_PARENTHESES (289) 19 23 28 31 40 43 52 56
+T_SWITCH (290) 31
+T_FOR (291) 43
+T_WHILE (292) 40 52
+T_DO (293) 52
+T_PRINT (294) 19
+T_CONDICIONAL (295) 56
+T_CONT_CONDICIONAL (296) 35 57
+T_ASSIGN (297) 59 60
+T_RETURN (298)
+T_ARROW_RIGHT (299) 35 39
+T_LEFT_POINTER (300)
+T_RIGHT_POINTER (301)
+T_OP_SUM (302)
+T_OP_SUB (303)
+T_OP_MUL (304)
+T_OP_DIV (305)
+T_MLC_START (306) 65
+T_MLC_END (307) 65
+T_EMPTY (308)
+T_TAB (309)
+T_CARRIER (310)
+T_UNKNOWN (311)
+T_COMMENT_C (312) 66
+T_SLC (313) 64
+
+
+Nonterminals, with rules where they appear
+
+$accept (59)
+    on left: 0
+start_ (60)
+    on left: 2, on right: 0
+$@1 (61)
+    on left: 1, on right: 2
+statement_set (62)
+    on left: 3 4, on right: 2 4 21
+statement (63)
+    on left: 5 6 7 8 9 10 11 12 13 14 15 16, on right: 3 4 22
+marker (64)
+    on left: 17, on right: 2 4 21 22 33 39 40 44 52 54
+goto (65)
+    on left: 18, on right: 21 22 44
+print (66)
+    on left: 19, on right: 15
+function_block (67)
+    on left: 21 22, on right: 23 35 39 40 43 52 56 57
+$@2 (68)
+    on left: 20, on right: 21
+declaracao_funcao (69)
+    on left: 23, on right: 8
+funcao_scope (70)
+    on left: 24 25, on right: 23 28
+funcao_args (71)
+    on left: 26 27, on right: 23 26 28
+chamada_funcao (72)
+    on left: 28, on right: 10
+when (73)
+    on left: 31, on right: 6
+$@3 (74)
+    on left: 29, on right: 31
+$@4 (75)
+    on left: 30, on right: 31
+switch_statement_set (76)
+    on left: 32 33 35, on right: 31 33
+$@5 (77)
+    on left: 34, on right: 35
+switch_statement (78)
+    on left: 39, on right: 32 33
+$@6 (79)
+    on left: 36, on right: 39
+$@7 (80)
+    on left: 37, on right: 39
+$@8 (81)
+    on left: 38, on right: 39
+loop_while (82)
+    on left: 40, on right: 12
+primitive_type (83)
+    on left: 41 42, on right: 23 60 61
+loop_for (84)
+    on left: 43, on right: 13
+loop_for_cond (85)
+    on left: 44, on right: 43
+loop_for_dec (86)
+    on left: 45 46 47, on right: 44
+loop_for_inc (87)
+    on left: 48 49 50, on right: 44
+loop_do (88)
+    on left: 52, on right: 14
+$@9 (89)
+    on left: 51, on right: 52
+b_expression (90)
+    on left: 53 54 55, on right: 40 44 52 54 56
+logico_if (91)
+    on left: 56, on right: 5
+if_else (92)
+    on left: 57 58, on right: 56
+assign (93)
+    on left: 59, on right: 16 46 49
+declaracao (94)
+    on left: 60 61, on right: 7 26 27 45
+incremento (95)
+    on left: 62 63, on right: 11 48
+comentario (96)
+    on left: 64 65, on right: 9
+comm_ml (97)
+    on left: 66 67, on right: 65 66
+expression (98)
+    on left: 68 69 70 71 72 73, on right: 19 31 39 55 59 60 63 72 73
+
+
+State 0
+
+    0 $accept: . start_ $end
+
+    $default  reduce using rule 1 ($@1)
+
+    start_  go to state 1
+    $@1     go to state 2
+
+
+State 1
+
+    0 $accept: start_ . $end
+
+    $end  shift, and go to state 3
+
+
+State 2
+
+    2 start_: $@1 . statement_set marker
+
+    T_ID           shift, and go to state 4
+    T_INT          shift, and go to state 5
+    T_BOOL         shift, and go to state 6
+    T_RESERVED     shift, and go to state 7
+    T_FOR          shift, and go to state 8
+    T_WHILE        shift, and go to state 9
+    T_DO           shift, and go to state 10
+    T_PRINT        shift, and go to state 11
+    T_CONDICIONAL  shift, and go to state 12
+    T_MLC_START    shift, and go to state 13
+    T_SLC          shift, and go to state 14
+
+    $default  reduce using rule 29 ($@3)
+
+    statement_set      go to state 15
+    statement          go to state 16
+    print              go to state 17
+    declaracao_funcao  go to state 18
+    funcao_scope       go to state 19
+    chamada_funcao     go to state 20
+    when               go to state 21
+    $@3                go to state 22
+    loop_while         go to state 23
+    primitive_type     go to state 24
+    loop_for           go to state 25
+    loop_do            go to state 26
+    logico_if          go to state 27
+    assign             go to state 28
+    declaracao         go to state 29
+    incremento         go to state 30
+    comentario         go to state 31
+
+
+State 3
+
+    0 $accept: start_ $end .
+
+    $default  accept
+
+
+State 4
+
+   25 funcao_scope: T_ID .
+   59 assign: T_ID . T_ASSIGN expression
+   62 incremento: T_ID . T_INCREMENT
+   63           | T_ID . T_SELF_ASSIGN expression
+
+    T_INCREMENT    shift, and go to state 32
+    T_SELF_ASSIGN  shift, and go to state 33
+    T_ASSIGN       shift, and go to state 34
+
+    $default  reduce using rule 25 (funcao_scope)
+
+
+State 5
+
+   41 primitive_type: T_INT .
+
+    $default  reduce using rule 41 (primitive_type)
+
+
+State 6
+
+   42 primitive_type: T_BOOL .
+
+    $default  reduce using rule 42 (primitive_type)
+
+
+State 7
+
+   24 funcao_scope: T_RESERVED .
+
+    $default  reduce using rule 24 (funcao_scope)
+
+
+State 8
+
+   43 loop_for: T_FOR . T_LEFT_PARENTHESES loop_for_cond T_RIGHT_PARENTHESES function_block
+
+    T_LEFT_PARENTHESES  shift, and go to state 35
+
+
+State 9
+
+   40 loop_while: T_WHILE . marker T_LEFT_PARENTHESES b_expression T_RIGHT_PARENTHESES function_block
+
+    $default  reduce using rule 17 (marker)
+
+    marker  go to state 36
+
+
+State 10
+
+   52 loop_do: T_DO . function_block $@9 T_WHILE T_LEFT_PARENTHESES marker b_expression T_RIGHT_PARENTHESES T_SEPARATOR
+
+    T_LEFT_BLOCK  shift, and go to state 37
+
+    $default  reduce using rule 17 (marker)
+
+    marker          go to state 38
+    function_block  go to state 39
+
+
+State 11
+
+   19 print: T_PRINT . T_LEFT_PARENTHESES expression T_RIGHT_PARENTHESES
+
+    T_LEFT_PARENTHESES  shift, and go to state 40
+
+
+State 12
+
+   56 logico_if: T_CONDICIONAL . T_LEFT_PARENTHESES b_expression T_RIGHT_PARENTHESES function_block if_else
+
+    T_LEFT_PARENTHESES  shift, and go to state 41
+
+
+State 13
+
+   65 comentario: T_MLC_START . comm_ml T_MLC_END
+
+    T_COMMENT_C  shift, and go to state 42
+
+    $default  reduce using rule 67 (comm_ml)
+
+    comm_ml  go to state 43
+
+
+State 14
+
+   64 comentario: T_SLC .
+
+    $default  reduce using rule 64 (comentario)
+
+
+State 15
+
+    2 start_: $@1 statement_set . marker
+
+    $default  reduce using rule 17 (marker)
+
+    marker  go to state 44
+
+
+State 16
+
+    3 statement_set: statement .
+    4              | statement . marker statement_set
+
+    $end           reduce using rule 3 (statement_set)
+    T_RIGHT_BLOCK  reduce using rule 3 (statement_set)
+    $default       reduce using rule 17 (marker)
+
+    marker  go to state 45
+
+
+State 17
+
+   15 statement: print . T_SEPARATOR
+
+    T_SEPARATOR  shift, and go to state 46
+
+
+State 18
+
+    8 statement: declaracao_funcao .
+
+    $default  reduce using rule 8 (statement)
+
+
+State 19
+
+   28 chamada_funcao: funcao_scope . T_LEFT_PARENTHESES funcao_args T_RIGHT_PARENTHESES T_SEPARATOR
+
+    T_LEFT_PARENTHESES  shift, and go to state 47
+
+
+State 20
+
+   10 statement: chamada_funcao .
+
+    $default  reduce using rule 10 (statement)
+
+
+State 21
+
+    6 statement: when .
+
+    $default  reduce using rule 6 (statement)
+
+
+State 22
+
+   31 when: $@3 . T_SWITCH T_LEFT_PARENTHESES expression $@4 T_RIGHT_PARENTHESES T_LEFT_BLOCK switch_statement_set T_RIGHT_BLOCK
+
+    T_SWITCH  shift, and go to state 48
+
+
+State 23
+
+   12 statement: loop_while .
+
+    $default  reduce using rule 12 (statement)
+
+
+State 24
+
+   23 declaracao_funcao: primitive_type . funcao_scope T_LEFT_PARENTHESES funcao_args T_RIGHT_PARENTHESES function_block
+   60 declaracao: primitive_type . T_ID T_ASSIGN expression
+   61           | primitive_type . T_ID
+
+    T_ID        shift, and go to state 49
+    T_RESERVED  shift, and go to state 7
+
+    funcao_scope  go to state 50
+
+
+State 25
+
+   13 statement: loop_for .
+
+    $default  reduce using rule 13 (statement)
+
+
+State 26
+
+   14 statement: loop_do .
+
+    $default  reduce using rule 14 (statement)
+
+
+State 27
+
+    5 statement: logico_if .
+
+    $default  reduce using rule 5 (statement)
+
+
+State 28
+
+   16 statement: assign . T_SEPARATOR
+
+    T_SEPARATOR  shift, and go to state 51
+
+
+State 29
+
+    7 statement: declaracao . T_SEPARATOR
+
+    T_SEPARATOR  shift, and go to state 52
+
+
+State 30
+
+   11 statement: incremento . T_SEPARATOR
+
+    T_SEPARATOR  shift, and go to state 53
+
+
+State 31
+
+    9 statement: comentario .
+
+    $default  reduce using rule 9 (statement)
+
+
+State 32
+
+   62 incremento: T_ID T_INCREMENT .
+
+    $default  reduce using rule 62 (incremento)
+
+
+State 33
+
+   63 incremento: T_ID T_SELF_ASSIGN . expression
+
+    INT       shift, and go to state 54
+    BOOL      shift, and go to state 55
+    T_ID      shift, and go to state 56
+    T_STRING  shift, and go to state 57
+    T_LEFT    shift, and go to state 58
+
+    expression  go to state 59
+
+
+State 34
+
+   59 assign: T_ID T_ASSIGN . expression
+
+    INT       shift, and go to state 54
+    BOOL      shift, and go to state 55
+    T_ID      shift, and go to state 56
+    T_STRING  shift, and go to state 57
+    T_LEFT    shift, and go to state 58
+
+    expression  go to state 60
+
+
+State 35
+
+   43 loop_for: T_FOR T_LEFT_PARENTHESES . loop_for_cond T_RIGHT_PARENTHESES function_block
+
+    T_ID    shift, and go to state 61
+    T_INT   shift, and go to state 5
+    T_BOOL  shift, and go to state 6
+
+    $default  reduce using rule 47 (loop_for_dec)
+
+    primitive_type  go to state 62
+    loop_for_cond   go to state 63
+    loop_for_dec    go to state 64
+    assign          go to state 65
+    declaracao      go to state 66
+
+
+State 36
+
+   40 loop_while: T_WHILE marker . T_LEFT_PARENTHESES b_expression T_RIGHT_PARENTHESES function_block
+
+    T_LEFT_PARENTHESES  shift, and go to state 67
+
+
+State 37
+
+   21 function_block: T_LEFT_BLOCK . $@2 marker statement_set goto T_RIGHT_BLOCK
+
+    $default  reduce using rule 20 ($@2)
+
+    $@2  go to state 68
+
+
+State 38
+
+   22 function_block: marker . statement goto
+
+    T_ID           shift, and go to state 4
+    T_INT          shift, and go to state 5
+    T_BOOL         shift, and go to state 6
+    T_RESERVED     shift, and go to state 7
+    T_FOR          shift, and go to state 8
+    T_WHILE        shift, and go to state 9
+    T_DO           shift, and go to state 10
+    T_PRINT        shift, and go to state 11
+    T_CONDICIONAL  shift, and go to state 12
+    T_MLC_START    shift, and go to state 13
+    T_SLC          shift, and go to state 14
+
+    $default  reduce using rule 29 ($@3)
+
+    statement          go to state 69
+    print              go to state 17
+    declaracao_funcao  go to state 18
+    funcao_scope       go to state 19
+    chamada_funcao     go to state 20
+    when               go to state 21
+    $@3                go to state 22
+    loop_while         go to state 23
+    primitive_type     go to state 24
+    loop_for           go to state 25
+    loop_do            go to state 26
+    logico_if          go to state 27
+    assign             go to state 28
+    declaracao         go to state 29
+    incremento         go to state 30
+    comentario         go to state 31
+
+
+State 39
+
+   52 loop_do: T_DO function_block . $@9 T_WHILE T_LEFT_PARENTHESES marker b_expression T_RIGHT_PARENTHESES T_SEPARATOR
+
+    $default  reduce using rule 51 ($@9)
+
+    $@9  go to state 70
+
+
+State 40
+
+   19 print: T_PRINT T_LEFT_PARENTHESES . expression T_RIGHT_PARENTHESES
+
+    INT       shift, and go to state 54
+    BOOL      shift, and go to state 55
+    T_ID      shift, and go to state 56
+    T_STRING  shift, and go to state 57
+    T_LEFT    shift, and go to state 58
+
+    expression  go to state 71
+
+
+State 41
+
+   56 logico_if: T_CONDICIONAL T_LEFT_PARENTHESES . b_expression T_RIGHT_PARENTHESES function_block if_else
+
+    INT       shift, and go to state 54
+    BOOL      shift, and go to state 72
+    T_ID      shift, and go to state 56
+    T_STRING  shift, and go to state 57
+    T_LEFT    shift, and go to state 58
+
+    b_expression  go to state 73
+    expression    go to state 74
+
+
+State 42
+
+   66 comm_ml: T_COMMENT_C . comm_ml
+
+    T_COMMENT_C  shift, and go to state 42
+
+    $default  reduce using rule 67 (comm_ml)
+
+    comm_ml  go to state 75
+
+
+State 43
+
+   65 comentario: T_MLC_START comm_ml . T_MLC_END
+
+    T_MLC_END  shift, and go to state 76
+
+
+State 44
+
+    2 start_: $@1 statement_set marker .
+
+    $default  reduce using rule 2 (start_)
+
+
+State 45
+
+    4 statement_set: statement marker . statement_set
+
+    T_ID           shift, and go to state 4
+    T_INT          shift, and go to state 5
+    T_BOOL         shift, and go to state 6
+    T_RESERVED     shift, and go to state 7
+    T_FOR          shift, and go to state 8
+    T_WHILE        shift, and go to state 9
+    T_DO           shift, and go to state 10
+    T_PRINT        shift, and go to state 11
+    T_CONDICIONAL  shift, and go to state 12
+    T_MLC_START    shift, and go to state 13
+    T_SLC          shift, and go to state 14
+
+    $default  reduce using rule 29 ($@3)
+
+    statement_set      go to state 77
+    statement          go to state 16
+    print              go to state 17
+    declaracao_funcao  go to state 18
+    funcao_scope       go to state 19
+    chamada_funcao     go to state 20
+    when               go to state 21
+    $@3                go to state 22
+    loop_while         go to state 23
+    primitive_type     go to state 24
+    loop_for           go to state 25
+    loop_do            go to state 26
+    logico_if          go to state 27
+    assign             go to state 28
+    declaracao         go to state 29
+    incremento         go to state 30
+    comentario         go to state 31
+
+
+State 46
+
+   15 statement: print T_SEPARATOR .
+
+    $default  reduce using rule 15 (statement)
+
+
+State 47
+
+   28 chamada_funcao: funcao_scope T_LEFT_PARENTHESES . funcao_args T_RIGHT_PARENTHESES T_SEPARATOR
+
+    T_INT   shift, and go to state 5
+    T_BOOL  shift, and go to state 6
+
+    funcao_args     go to state 78
+    primitive_type  go to state 62
+    declaracao      go to state 79
+
+
+State 48
+
+   31 when: $@3 T_SWITCH . T_LEFT_PARENTHESES expression $@4 T_RIGHT_PARENTHESES T_LEFT_BLOCK switch_statement_set T_RIGHT_BLOCK
+
+    T_LEFT_PARENTHESES  shift, and go to state 80
+
+
+State 49
+
+   25 funcao_scope: T_ID .
+   60 declaracao: primitive_type T_ID . T_ASSIGN expression
+   61           | primitive_type T_ID .
+
+    T_ASSIGN  shift, and go to state 81
+
+    T_SEPARATOR  reduce using rule 61 (declaracao)
+    $default     reduce using rule 25 (funcao_scope)
+
+
+State 50
+
+   23 declaracao_funcao: primitive_type funcao_scope . T_LEFT_PARENTHESES funcao_args T_RIGHT_PARENTHESES function_block
+
+    T_LEFT_PARENTHESES  shift, and go to state 82
+
+
+State 51
+
+   16 statement: assign T_SEPARATOR .
+
+    $default  reduce using rule 16 (statement)
+
+
+State 52
+
+    7 statement: declaracao T_SEPARATOR .
+
+    $default  reduce using rule 7 (statement)
+
+
+State 53
+
+   11 statement: incremento T_SEPARATOR .
+
+    $default  reduce using rule 11 (statement)
+
+
+State 54
+
+   68 expression: INT .
+
+    $default  reduce using rule 68 (expression)
+
+
+State 55
+
+   70 expression: BOOL .
+
+    $default  reduce using rule 70 (expression)
+
+
+State 56
+
+   71 expression: T_ID .
+
+    $default  reduce using rule 71 (expression)
+
+
+State 57
+
+   69 expression: T_STRING .
+
+    $default  reduce using rule 69 (expression)
+
+
+State 58
+
+   73 expression: T_LEFT . expression T_RIGHT
+
+    INT       shift, and go to state 54
+    BOOL      shift, and go to state 55
+    T_ID      shift, and go to state 56
+    T_STRING  shift, and go to state 57
+    T_LEFT    shift, and go to state 58
+
+    expression  go to state 83
+
+
+State 59
+
+   63 incremento: T_ID T_SELF_ASSIGN expression .
+   72 expression: expression . T_ARITH_OP expression
+
+    T_ARITH_OP  shift, and go to state 84
+
+    $default  reduce using rule 63 (incremento)
+
+
+State 60
+
+   59 assign: T_ID T_ASSIGN expression .
+   72 expression: expression . T_ARITH_OP expression
+
+    T_ARITH_OP  shift, and go to state 84
+
+    $default  reduce using rule 59 (assign)
+
+
+State 61
+
+   59 assign: T_ID . T_ASSIGN expression
+
+    T_ASSIGN  shift, and go to state 34
+
+
+State 62
+
+   60 declaracao: primitive_type . T_ID T_ASSIGN expression
+   61           | primitive_type . T_ID
+
+    T_ID  shift, and go to state 85
+
+
+State 63
+
+   43 loop_for: T_FOR T_LEFT_PARENTHESES loop_for_cond . T_RIGHT_PARENTHESES function_block
+
+    T_RIGHT_PARENTHESES  shift, and go to state 86
+
+
+State 64
+
+   44 loop_for_cond: loop_for_dec . T_SEPARATOR marker b_expression T_SEPARATOR marker loop_for_inc goto
+
+    T_SEPARATOR  shift, and go to state 87
+
+
+State 65
+
+   46 loop_for_dec: assign .
+
+    $default  reduce using rule 46 (loop_for_dec)
+
+
+State 66
+
+   45 loop_for_dec: declaracao .
+
+    $default  reduce using rule 45 (loop_for_dec)
+
+
+State 67
+
+   40 loop_while: T_WHILE marker T_LEFT_PARENTHESES . b_expression T_RIGHT_PARENTHESES function_block
+
+    INT       shift, and go to state 54
+    BOOL      shift, and go to state 72
+    T_ID      shift, and go to state 56
+    T_STRING  shift, and go to state 57
+    T_LEFT    shift, and go to state 58
+
+    b_expression  go to state 88
+    expression    go to state 74
+
+
+State 68
+
+   21 function_block: T_LEFT_BLOCK $@2 . marker statement_set goto T_RIGHT_BLOCK
+
+    $default  reduce using rule 17 (marker)
+
+    marker  go to state 89
+
+
+State 69
+
+   22 function_block: marker statement . goto
+
+    $default  reduce using rule 18 (goto)
+
+    goto  go to state 90
+
+
+State 70
+
+   52 loop_do: T_DO function_block $@9 . T_WHILE T_LEFT_PARENTHESES marker b_expression T_RIGHT_PARENTHESES T_SEPARATOR
+
+    T_WHILE  shift, and go to state 91
+
+
+State 71
+
+   19 print: T_PRINT T_LEFT_PARENTHESES expression . T_RIGHT_PARENTHESES
+   72 expression: expression . T_ARITH_OP expression
+
+    T_ARITH_OP           shift, and go to state 84
+    T_RIGHT_PARENTHESES  shift, and go to state 92
+
+
+State 72
+
+   53 b_expression: BOOL .
+   70 expression: BOOL .
+
+    T_ARITH_OP        reduce using rule 70 (expression)
+    T_LOGIC_OPERATOR  reduce using rule 70 (expression)
+    $default          reduce using rule 53 (b_expression)
+
+
+State 73
+
+   54 b_expression: b_expression . T_BOOL_OP marker b_expression
+   56 logico_if: T_CONDICIONAL T_LEFT_PARENTHESES b_expression . T_RIGHT_PARENTHESES function_block if_else
+
+    T_BOOL_OP            shift, and go to state 93
+    T_RIGHT_PARENTHESES  shift, and go to state 94
+
+
+State 74
+
+   55 b_expression: expression . T_LOGIC_OPERATOR expression
+   72 expression: expression . T_ARITH_OP expression
+
+    T_ARITH_OP        shift, and go to state 84
+    T_LOGIC_OPERATOR  shift, and go to state 95
+
+
+State 75
+
+   66 comm_ml: T_COMMENT_C comm_ml .
+
+    $default  reduce using rule 66 (comm_ml)
+
+
+State 76
+
+   65 comentario: T_MLC_START comm_ml T_MLC_END .
+
+    $default  reduce using rule 65 (comentario)
+
+
+State 77
+
+    4 statement_set: statement marker statement_set .
+
+    $default  reduce using rule 4 (statement_set)
+
+
+State 78
+
+   28 chamada_funcao: funcao_scope T_LEFT_PARENTHESES funcao_args . T_RIGHT_PARENTHESES T_SEPARATOR
+
+    T_RIGHT_PARENTHESES  shift, and go to state 96
+
+
+State 79
+
+   26 funcao_args: declaracao . T_EXPR_SEPARATOR funcao_args
+   27            | declaracao .
+
+    T_EXPR_SEPARATOR  shift, and go to state 97
+
+    $default  reduce using rule 27 (funcao_args)
+
+
+State 80
+
+   31 when: $@3 T_SWITCH T_LEFT_PARENTHESES . expression $@4 T_RIGHT_PARENTHESES T_LEFT_BLOCK switch_statement_set T_RIGHT_BLOCK
+
+    INT       shift, and go to state 54
+    BOOL      shift, and go to state 55
+    T_ID      shift, and go to state 56
+    T_STRING  shift, and go to state 57
+    T_LEFT    shift, and go to state 58
+
+    expression  go to state 98
+
+
+State 81
+
+   60 declaracao: primitive_type T_ID T_ASSIGN . expression
+
+    INT       shift, and go to state 54
+    BOOL      shift, and go to state 55
+    T_ID      shift, and go to state 56
+    T_STRING  shift, and go to state 57
+    T_LEFT    shift, and go to state 58
+
+    expression  go to state 99
+
+
+State 82
+
+   23 declaracao_funcao: primitive_type funcao_scope T_LEFT_PARENTHESES . funcao_args T_RIGHT_PARENTHESES function_block
+
+    T_INT   shift, and go to state 5
+    T_BOOL  shift, and go to state 6
+
+    funcao_args     go to state 100
+    primitive_type  go to state 62
+    declaracao      go to state 79
+
+
+State 83
+
+   72 expression: expression . T_ARITH_OP expression
+   73           | T_LEFT expression . T_RIGHT
+
+    T_ARITH_OP  shift, and go to state 84
+    T_RIGHT     shift, and go to state 101
+
+
+State 84
+
+   72 expression: expression T_ARITH_OP . expression
+
+    INT       shift, and go to state 54
+    BOOL      shift, and go to state 55
+    T_ID      shift, and go to state 56
+    T_STRING  shift, and go to state 57
+    T_LEFT    shift, and go to state 58
+
+    expression  go to state 102
+
+
+State 85
+
+   60 declaracao: primitive_type T_ID . T_ASSIGN expression
+   61           | primitive_type T_ID .
+
+    T_ASSIGN  shift, and go to state 81
+
+    $default  reduce using rule 61 (declaracao)
+
+
+State 86
+
+   43 loop_for: T_FOR T_LEFT_PARENTHESES loop_for_cond T_RIGHT_PARENTHESES . function_block
+
+    T_LEFT_BLOCK  shift, and go to state 37
+
+    $default  reduce using rule 17 (marker)
+
+    marker          go to state 38
+    function_block  go to state 103
+
+
+State 87
+
+   44 loop_for_cond: loop_for_dec T_SEPARATOR . marker b_expression T_SEPARATOR marker loop_for_inc goto
+
+    $default  reduce using rule 17 (marker)
+
+    marker  go to state 104
+
+
+State 88
+
+   40 loop_while: T_WHILE marker T_LEFT_PARENTHESES b_expression . T_RIGHT_PARENTHESES function_block
+   54 b_expression: b_expression . T_BOOL_OP marker b_expression
+
+    T_BOOL_OP            shift, and go to state 93
+    T_RIGHT_PARENTHESES  shift, and go to state 105
+
+
+State 89
+
+   21 function_block: T_LEFT_BLOCK $@2 marker . statement_set goto T_RIGHT_BLOCK
+
+    T_ID           shift, and go to state 4
+    T_INT          shift, and go to state 5
+    T_BOOL         shift, and go to state 6
+    T_RESERVED     shift, and go to state 7
+    T_FOR          shift, and go to state 8
+    T_WHILE        shift, and go to state 9
+    T_DO           shift, and go to state 10
+    T_PRINT        shift, and go to state 11
+    T_CONDICIONAL  shift, and go to state 12
+    T_MLC_START    shift, and go to state 13
+    T_SLC          shift, and go to state 14
+
+    $default  reduce using rule 29 ($@3)
+
+    statement_set      go to state 106
+    statement          go to state 16
+    print              go to state 17
+    declaracao_funcao  go to state 18
+    funcao_scope       go to state 19
+    chamada_funcao     go to state 20
+    when               go to state 21
+    $@3                go to state 22
+    loop_while         go to state 23
+    primitive_type     go to state 24
+    loop_for           go to state 25
+    loop_do            go to state 26
+    logico_if          go to state 27
+    assign             go to state 28
+    declaracao         go to state 29
+    incremento         go to state 30
+    comentario         go to state 31
+
+
+State 90
+
+   22 function_block: marker statement goto .
+
+    $default  reduce using rule 22 (function_block)
+
+
+State 91
+
+   52 loop_do: T_DO function_block $@9 T_WHILE . T_LEFT_PARENTHESES marker b_expression T_RIGHT_PARENTHESES T_SEPARATOR
+
+    T_LEFT_PARENTHESES  shift, and go to state 107
+
+
+State 92
+
+   19 print: T_PRINT T_LEFT_PARENTHESES expression T_RIGHT_PARENTHESES .
+
+    $default  reduce using rule 19 (print)
+
+
+State 93
+
+   54 b_expression: b_expression T_BOOL_OP . marker b_expression
+
+    $default  reduce using rule 17 (marker)
+
+    marker  go to state 108
+
+
+State 94
+
+   56 logico_if: T_CONDICIONAL T_LEFT_PARENTHESES b_expression T_RIGHT_PARENTHESES . function_block if_else
+
+    T_LEFT_BLOCK  shift, and go to state 37
+
+    $default  reduce using rule 17 (marker)
+
+    marker          go to state 38
+    function_block  go to state 109
+
+
+State 95
+
+   55 b_expression: expression T_LOGIC_OPERATOR . expression
+
+    INT       shift, and go to state 54
+    BOOL      shift, and go to state 55
+    T_ID      shift, and go to state 56
+    T_STRING  shift, and go to state 57
+    T_LEFT    shift, and go to state 58
+
+    expression  go to state 110
+
+
+State 96
+
+   28 chamada_funcao: funcao_scope T_LEFT_PARENTHESES funcao_args T_RIGHT_PARENTHESES . T_SEPARATOR
+
+    T_SEPARATOR  shift, and go to state 111
+
+
+State 97
+
+   26 funcao_args: declaracao T_EXPR_SEPARATOR . funcao_args
+
+    T_INT   shift, and go to state 5
+    T_BOOL  shift, and go to state 6
+
+    funcao_args     go to state 112
+    primitive_type  go to state 62
+    declaracao      go to state 79
+
+
+State 98
+
+   31 when: $@3 T_SWITCH T_LEFT_PARENTHESES expression . $@4 T_RIGHT_PARENTHESES T_LEFT_BLOCK switch_statement_set T_RIGHT_BLOCK
+   72 expression: expression . T_ARITH_OP expression
+
+    T_ARITH_OP  shift, and go to state 84
+
+    $default  reduce using rule 30 ($@4)
+
+    $@4  go to state 113
+
+
+State 99
+
+   60 declaracao: primitive_type T_ID T_ASSIGN expression .
+   72 expression: expression . T_ARITH_OP expression
+
+    T_ARITH_OP  shift, and go to state 84
+
+    $default  reduce using rule 60 (declaracao)
+
+
+State 100
+
+   23 declaracao_funcao: primitive_type funcao_scope T_LEFT_PARENTHESES funcao_args . T_RIGHT_PARENTHESES function_block
+
+    T_RIGHT_PARENTHESES  shift, and go to state 114
+
+
+State 101
+
+   73 expression: T_LEFT expression T_RIGHT .
+
+    $default  reduce using rule 73 (expression)
+
+
+State 102
+
+   72 expression: expression . T_ARITH_OP expression
+   72           | expression T_ARITH_OP expression .
+
+    $default  reduce using rule 72 (expression)
+
+
+State 103
+
+   43 loop_for: T_FOR T_LEFT_PARENTHESES loop_for_cond T_RIGHT_PARENTHESES function_block .
+
+    $default  reduce using rule 43 (loop_for)
+
+
+State 104
+
+   44 loop_for_cond: loop_for_dec T_SEPARATOR marker . b_expression T_SEPARATOR marker loop_for_inc goto
+
+    INT       shift, and go to state 54
+    BOOL      shift, and go to state 72
+    T_ID      shift, and go to state 56
+    T_STRING  shift, and go to state 57
+    T_LEFT    shift, and go to state 58
+
+    b_expression  go to state 115
+    expression    go to state 74
+
+
+State 105
+
+   40 loop_while: T_WHILE marker T_LEFT_PARENTHESES b_expression T_RIGHT_PARENTHESES . function_block
+
+    T_LEFT_BLOCK  shift, and go to state 37
+
+    $default  reduce using rule 17 (marker)
+
+    marker          go to state 38
+    function_block  go to state 116
+
+
+State 106
+
+   21 function_block: T_LEFT_BLOCK $@2 marker statement_set . goto T_RIGHT_BLOCK
+
+    $default  reduce using rule 18 (goto)
+
+    goto  go to state 117
+
+
+State 107
+
+   52 loop_do: T_DO function_block $@9 T_WHILE T_LEFT_PARENTHESES . marker b_expression T_RIGHT_PARENTHESES T_SEPARATOR
+
+    $default  reduce using rule 17 (marker)
+
+    marker  go to state 118
+
+
+State 108
+
+   54 b_expression: b_expression T_BOOL_OP marker . b_expression
+
+    INT       shift, and go to state 54
+    BOOL      shift, and go to state 72
+    T_ID      shift, and go to state 56
+    T_STRING  shift, and go to state 57
+    T_LEFT    shift, and go to state 58
+
+    b_expression  go to state 119
+    expression    go to state 74
+
+
+State 109
+
+   56 logico_if: T_CONDICIONAL T_LEFT_PARENTHESES b_expression T_RIGHT_PARENTHESES function_block . if_else
+
+    T_CONT_CONDICIONAL  shift, and go to state 120
+
+    T_CONT_CONDICIONAL  [reduce using rule 58 (if_else)]
+    $default            reduce using rule 58 (if_else)
+
+    if_else  go to state 121
+
+
+State 110
+
+   55 b_expression: expression T_LOGIC_OPERATOR expression .
+   72 expression: expression . T_ARITH_OP expression
+
+    T_ARITH_OP  shift, and go to state 84
+
+    $default  reduce using rule 55 (b_expression)
+
+
+State 111
+
+   28 chamada_funcao: funcao_scope T_LEFT_PARENTHESES funcao_args T_RIGHT_PARENTHESES T_SEPARATOR .
+
+    $default  reduce using rule 28 (chamada_funcao)
+
+
+State 112
+
+   26 funcao_args: declaracao T_EXPR_SEPARATOR funcao_args .
+
+    $default  reduce using rule 26 (funcao_args)
+
+
+State 113
+
+   31 when: $@3 T_SWITCH T_LEFT_PARENTHESES expression $@4 . T_RIGHT_PARENTHESES T_LEFT_BLOCK switch_statement_set T_RIGHT_BLOCK
+
+    T_RIGHT_PARENTHESES  shift, and go to state 122
+
+
+State 114
+
+   23 declaracao_funcao: primitive_type funcao_scope T_LEFT_PARENTHESES funcao_args T_RIGHT_PARENTHESES . function_block
+
+    T_LEFT_BLOCK  shift, and go to state 37
+
+    $default  reduce using rule 17 (marker)
+
+    marker          go to state 38
+    function_block  go to state 123
+
+
+State 115
+
+   44 loop_for_cond: loop_for_dec T_SEPARATOR marker b_expression . T_SEPARATOR marker loop_for_inc goto
+   54 b_expression: b_expression . T_BOOL_OP marker b_expression
+
+    T_BOOL_OP    shift, and go to state 93
+    T_SEPARATOR  shift, and go to state 124
+
+
+State 116
+
+   40 loop_while: T_WHILE marker T_LEFT_PARENTHESES b_expression T_RIGHT_PARENTHESES function_block .
+
+    $default  reduce using rule 40 (loop_while)
+
+
+State 117
+
+   21 function_block: T_LEFT_BLOCK $@2 marker statement_set goto . T_RIGHT_BLOCK
+
+    T_RIGHT_BLOCK  shift, and go to state 125
+
+
+State 118
+
+   52 loop_do: T_DO function_block $@9 T_WHILE T_LEFT_PARENTHESES marker . b_expression T_RIGHT_PARENTHESES T_SEPARATOR
+
+    INT       shift, and go to state 54
+    BOOL      shift, and go to state 72
+    T_ID      shift, and go to state 56
+    T_STRING  shift, and go to state 57
+    T_LEFT    shift, and go to state 58
+
+    b_expression  go to state 126
+    expression    go to state 74
+
+
+State 119
+
+   54 b_expression: b_expression . T_BOOL_OP marker b_expression
+   54             | b_expression T_BOOL_OP marker b_expression .
+
+    $default  reduce using rule 54 (b_expression)
+
+
+State 120
+
+   57 if_else: T_CONT_CONDICIONAL . function_block
+
+    T_LEFT_BLOCK  shift, and go to state 37
+
+    $default  reduce using rule 17 (marker)
+
+    marker          go to state 38
+    function_block  go to state 127
+
+
+State 121
+
+   56 logico_if: T_CONDICIONAL T_LEFT_PARENTHESES b_expression T_RIGHT_PARENTHESES function_block if_else .
+
+    $default  reduce using rule 56 (logico_if)
+
+
+State 122
+
+   31 when: $@3 T_SWITCH T_LEFT_PARENTHESES expression $@4 T_RIGHT_PARENTHESES . T_LEFT_BLOCK switch_statement_set T_RIGHT_BLOCK
+
+    T_LEFT_BLOCK  shift, and go to state 128
+
+
+State 123
+
+   23 declaracao_funcao: primitive_type funcao_scope T_LEFT_PARENTHESES funcao_args T_RIGHT_PARENTHESES function_block .
+
+    $default  reduce using rule 23 (declaracao_funcao)
+
+
+State 124
+
+   44 loop_for_cond: loop_for_dec T_SEPARATOR marker b_expression T_SEPARATOR . marker loop_for_inc goto
+
+    $default  reduce using rule 17 (marker)
+
+    marker  go to state 129
+
+
+State 125
+
+   21 function_block: T_LEFT_BLOCK $@2 marker statement_set goto T_RIGHT_BLOCK .
+
+    $default  reduce using rule 21 (function_block)
+
+
+State 126
+
+   52 loop_do: T_DO function_block $@9 T_WHILE T_LEFT_PARENTHESES marker b_expression . T_RIGHT_PARENTHESES T_SEPARATOR
+   54 b_expression: b_expression . T_BOOL_OP marker b_expression
+
+    T_BOOL_OP            shift, and go to state 93
+    T_RIGHT_PARENTHESES  shift, and go to state 130
+
+
+State 127
+
+   57 if_else: T_CONT_CONDICIONAL function_block .
+
+    $default  reduce using rule 57 (if_else)
+
+
+State 128
+
+   31 when: $@3 T_SWITCH T_LEFT_PARENTHESES expression $@4 T_RIGHT_PARENTHESES T_LEFT_BLOCK . switch_statement_set T_RIGHT_BLOCK
+
+    T_CONT_CONDICIONAL  shift, and go to state 131
+
+    $default  reduce using rule 36 ($@6)
+
+    switch_statement_set  go to state 132
+    switch_statement      go to state 133
+    $@6                   go to state 134
+
+
+State 129
+
+   44 loop_for_cond: loop_for_dec T_SEPARATOR marker b_expression T_SEPARATOR marker . loop_for_inc goto
+
+    T_ID  shift, and go to state 135
+
+    $default  reduce using rule 50 (loop_for_inc)
+
+    loop_for_inc  go to state 136
+    assign        go to state 137
+    incremento    go to state 138
+
+
+State 130
+
+   52 loop_do: T_DO function_block $@9 T_WHILE T_LEFT_PARENTHESES marker b_expression T_RIGHT_PARENTHESES . T_SEPARATOR
+
+    T_SEPARATOR  shift, and go to state 139
+
+
+State 131
+
+   35 switch_statement_set: T_CONT_CONDICIONAL . $@5 T_ARROW_RIGHT function_block
+
+    $default  reduce using rule 34 ($@5)
+
+    $@5  go to state 140
+
+
+State 132
+
+   31 when: $@3 T_SWITCH T_LEFT_PARENTHESES expression $@4 T_RIGHT_PARENTHESES T_LEFT_BLOCK switch_statement_set . T_RIGHT_BLOCK
+
+    T_RIGHT_BLOCK  shift, and go to state 141
+
+
+State 133
+
+   32 switch_statement_set: switch_statement .
+   33                     | switch_statement . marker switch_statement_set
+
+    T_RIGHT_BLOCK  reduce using rule 32 (switch_statement_set)
+    $default       reduce using rule 17 (marker)
+
+    marker  go to state 142
+
+
+State 134
+
+   39 switch_statement: $@6 . expression $@7 marker T_ARROW_RIGHT $@8 function_block
+
+    INT       shift, and go to state 54
+    BOOL      shift, and go to state 55
+    T_ID      shift, and go to state 56
+    T_STRING  shift, and go to state 57
+    T_LEFT    shift, and go to state 58
+
+    expression  go to state 143
+
+
+State 135
+
+   59 assign: T_ID . T_ASSIGN expression
+   62 incremento: T_ID . T_INCREMENT
+   63           | T_ID . T_SELF_ASSIGN expression
+
+    T_INCREMENT    shift, and go to state 32
+    T_SELF_ASSIGN  shift, and go to state 33
+    T_ASSIGN       shift, and go to state 34
+
+
+State 136
+
+   44 loop_for_cond: loop_for_dec T_SEPARATOR marker b_expression T_SEPARATOR marker loop_for_inc . goto
+
+    $default  reduce using rule 18 (goto)
+
+    goto  go to state 144
+
+
+State 137
+
+   49 loop_for_inc: assign .
+
+    $default  reduce using rule 49 (loop_for_inc)
+
+
+State 138
+
+   48 loop_for_inc: incremento .
+
+    $default  reduce using rule 48 (loop_for_inc)
+
+
+State 139
+
+   52 loop_do: T_DO function_block $@9 T_WHILE T_LEFT_PARENTHESES marker b_expression T_RIGHT_PARENTHESES T_SEPARATOR .
+
+    $default  reduce using rule 52 (loop_do)
+
+
+State 140
+
+   35 switch_statement_set: T_CONT_CONDICIONAL $@5 . T_ARROW_RIGHT function_block
+
+    T_ARROW_RIGHT  shift, and go to state 145
+
+
+State 141
+
+   31 when: $@3 T_SWITCH T_LEFT_PARENTHESES expression $@4 T_RIGHT_PARENTHESES T_LEFT_BLOCK switch_statement_set T_RIGHT_BLOCK .
+
+    $default  reduce using rule 31 (when)
+
+
+State 142
+
+   33 switch_statement_set: switch_statement marker . switch_statement_set
+
+    T_CONT_CONDICIONAL  shift, and go to state 131
+
+    $default  reduce using rule 36 ($@6)
+
+    switch_statement_set  go to state 146
+    switch_statement      go to state 133
+    $@6                   go to state 134
+
+
+State 143
+
+   39 switch_statement: $@6 expression . $@7 marker T_ARROW_RIGHT $@8 function_block
+   72 expression: expression . T_ARITH_OP expression
+
+    T_ARITH_OP  shift, and go to state 84
+
+    $default  reduce using rule 37 ($@7)
+
+    $@7  go to state 147
+
+
+State 144
+
+   44 loop_for_cond: loop_for_dec T_SEPARATOR marker b_expression T_SEPARATOR marker loop_for_inc goto .
+
+    $default  reduce using rule 44 (loop_for_cond)
+
+
+State 145
+
+   35 switch_statement_set: T_CONT_CONDICIONAL $@5 T_ARROW_RIGHT . function_block
+
+    T_LEFT_BLOCK  shift, and go to state 37
+
+    $default  reduce using rule 17 (marker)
+
+    marker          go to state 38
+    function_block  go to state 148
+
+
+State 146
+
+   33 switch_statement_set: switch_statement marker switch_statement_set .
+
+    $default  reduce using rule 33 (switch_statement_set)
+
+
+State 147
+
+   39 switch_statement: $@6 expression $@7 . marker T_ARROW_RIGHT $@8 function_block
+
+    $default  reduce using rule 17 (marker)
+
+    marker  go to state 149
+
+
+State 148
+
+   35 switch_statement_set: T_CONT_CONDICIONAL $@5 T_ARROW_RIGHT function_block .
+
+    $default  reduce using rule 35 (switch_statement_set)
+
+
+State 149
+
+   39 switch_statement: $@6 expression $@7 marker . T_ARROW_RIGHT $@8 function_block
+
+    T_ARROW_RIGHT  shift, and go to state 150
+
+
+State 150
+
+   39 switch_statement: $@6 expression $@7 marker T_ARROW_RIGHT . $@8 function_block
+
+    $default  reduce using rule 38 ($@8)
+
+    $@8  go to state 151
+
+
+State 151
+
+   39 switch_statement: $@6 expression $@7 marker T_ARROW_RIGHT $@8 . function_block
+
+    T_LEFT_BLOCK  shift, and go to state 37
+
+    $default  reduce using rule 17 (marker)
+
+    marker          go to state 38
+    function_block  go to state 152
+
+
+State 152
+
+   39 switch_statement: $@6 expression $@7 marker T_ARROW_RIGHT $@8 function_block .
+
+    $default  reduce using rule 39 (switch_statement)

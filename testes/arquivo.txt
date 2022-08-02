@@ -1,0 +1,12 @@
+int i;
+int fib1 = 0;
+int fib2 = 1;
+int soma;
+print("Sequencia de fibonacci");
+for(i = 1; i <= 10; i++) {
+	soma = fib1 + fib2;
+	fib1 = fib2;
+	fib2 = soma;
+	print(soma);
+}
+ 

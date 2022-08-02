@@ -1,0 +1,36 @@
+// Exemplo de uso da linguagem com0002-2022-01
+
+int valor1 = 0;
+int valor2 = 0;
+
+    int a;
+    int g;
+    int i;
+    a = 5;
+
+    print ("Digite um numero: \n");
+    print("5\n");
+    while (i<10) {
+        i++;
+        a++;
+    }
+
+print ("Incrementado algumas vezes a fica");
+
+    for (g=1;g < 10;g++){
+        print (".");
+    }
+	print ("\n");
+    if (a==15){ 
+        print ("A=15\n");
+    }
+    if ( a==18 or a==20 ){
+        print ("A igual a 18 ou 20\n");
+    }
+
+    if (i==100){
+        print("Decorando o texto...\n");
+    }
+    else{
+        print ("OK!\n");
+    }
